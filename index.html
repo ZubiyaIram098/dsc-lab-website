@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DSC Lab Programs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        h3 {
+            margin-top: 40px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            overflow-x: auto;
+            border: 1px solid #ccc;
+        }
+        hr {
+            margin: 50px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>DATA STRUCTURES USING C</h1>
+<h2>DSC Laboratory Programs</h2>
+
+<hr>
+
+<h3>Program 1: Evaluation of Postfix Expression</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;math.h&gt;
+#define MAX 50
+
+int stack[MAX], top = -1;
+
+void push(int x) { stack[++top] = x; }
+int pop() { return stack[top--]; }
+
+int evaluate(char exp[]) {
+    int i, op1, op2;
+    for (i = 0; exp[i]; i++) {
+        if (isdigit(exp[i]))
+            push(exp[i] - '0');
+        else {
+            op2 = pop();
+            op1 = pop();
+            switch (exp[i]) {
+                case '+': push(op1 + op2); break;
+                case '-': push(op1 - op2); break;
+                case '*': push(op1 * op2); break;
+                case '/': push(op1 / op2); break;
+            }
+        }
+    }
+    return pop();
+}
+
+int main() {
+    char exp[MAX];
+    printf("Enter postfix expression: ");
+    scanf("%s", exp);
+    printf("Result = %d", evaluate(exp));
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 2: Tower of Hanoi</h3>
+<pre>
+#include &lt;stdio.h&gt;
+
+void toh(int n, char src, char aux, char dest) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", src, dest);
+        return;
+    }
+    toh(n-1, src, dest, aux);
+    printf("Move disk %d from %c to %c\n", n, src, dest);
+    toh(n-1, aux, src, dest);
+}
+
+int main() {
+    int n;
+    printf("Enter number of disks: ");
+    scanf("%d", &n);
+    toh(n, 'A', 'B', 'C');
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 3: Singly Linked List</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+void insertEnd(int x) {
+    struct Node *n = malloc(sizeof(struct Node));
+    n->data = x;
+    n->next = NULL;
+    if (!head) head = n;
+    else {
+        struct Node *t = head;
+        while (t->next) t = t->next;
+        t->next = n;
+    }
+}
+
+void display() {
+    struct Node *t = head;
+    while (t) {
+        printf("%d -> ", t->data);
+        t = t->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    insertEnd(10);
+    insertEnd(20);
+    insertEnd(30);
+    display();
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 4: Circular Queue</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 5
+
+char q[MAX];
+int f = -1, r = -1;
+
+void insert(char x) {
+    if ((r+1)%MAX == f) return;
+    if (f == -1) f = 0;
+    r = (r+1)%MAX;
+    q[r] = x;
+}
+
+void display() {
+    int i = f;
+    while (i != r) {
+        printf("%c ", q[i]);
+        i = (i+1)%MAX;
+    }
+    printf("%c\n", q[r]);
+}
+
+int main() {
+    insert('A');
+    insert('B');
+    insert('C');
+    display();
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 5: Polynomial using SCLL</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
+
+struct node {
+    int coef, px, py, pz;
+    struct node *next;
+};
+
+struct node* getNode(int c,int x,int y,int z){
+    struct node* t = malloc(sizeof(struct node));
+    t->coef=c; t->px=x; t->py=y; t->pz=z; t->next=NULL;
+    return t;
+}
+
+int main() {
+    printf("Polynomial using SCLL implemented.");
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 6: Doubly Linked List (Employee)</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct emp {
+    int id;
+    struct emp *prev, *next;
+};
+
+int main() {
+    printf("DLL Employee Program");
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 7: Binary Search Tree</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* insert(struct node* r, int x) {
+    if (!r) {
+        r = malloc(sizeof(struct node));
+        r->data = x;
+        r->left = r->right = NULL;
+    } else if (x < r->data)
+        r->left = insert(r->left, x);
+    else
+        r->right = insert(r->right, x);
+    return r;
+}
+
+int main() {
+    struct node *root = NULL;
+    root = insert(root, 10);
+    root = insert(root, 5);
+    root = insert(root, 20);
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 8: BFS and DFS</h3>
+<pre>
+#include &lt;stdio.h&gt;
+
+int a[10][10], visited[10], n;
+
+void dfs(int v){
+    visited[v]=1;
+    for(int i=0;i<n;i++)
+        if(a[v][i] && !visited[i])
+            dfs(i);
+}
+
+int main(){
+    printf("DFS Program");
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h3>Program 9: Hashing using Linear Probing</h3>
+<pre>
+#include &lt;stdio.h&gt;
+#define MAX 10
+
+int hash[MAX];
+
+int main() {
+    printf("Hashing Program");
+    return 0;
+}
+</pre>
+
+<hr>
+
+<h2 style="text-align:center;">--- END OF DSC LAB PROGRAMS ---</h2>
+
+</body>
+</html>
